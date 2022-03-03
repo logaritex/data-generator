@@ -85,7 +85,7 @@ the result should look like this:
 }
 ```
 
-Next follow the [step-by-step user guide](https://www.logaritex.com/data-generator/usage/).
+Next follow the step-by-step [user guide](https://www.logaritex.com/data-generator/usage/).
 
 ## Features
 
