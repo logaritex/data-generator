@@ -6,7 +6,8 @@ The Avro Schemas can be annotated with [Data Faker](https://www.datafaker.net/us
 
 Data Generator allows, configuring dependencies between the fields of a single or different Schemas.
 
-Full documentation at [Data Generator](https://www.logaritex.com/data-generator/getting-started/).
+Full documentation at [https://www.logaritex.com/data-generator](https://www.logaritex.com/data-generator/getting-started/).
+
 ## Quick Start
 
 Add the `data-generator` dependency to your project:
@@ -19,7 +20,7 @@ Add the `data-generator` dependency to your project:
 </dependency>
 ```
 
-Craete an Avro Schema with data Faker and/or SpEL expressions to hint the desired field content:
+Create an Avro Schema with data Faker and/or SpEL expressions to hint the desired field content:
 
 ```yaml title="user.yaml"
 namespace: io.simple.clicksteram
@@ -84,7 +85,7 @@ the result should look like this:
 }
 ```
 
-Next follow the [step-by-step guidelines](https://www.logaritex.com/data-generator/getting-started/).
+Next follow the [step-by-step user guide](https://www.logaritex.com/data-generator/usage/).
 
 ## Features
 
