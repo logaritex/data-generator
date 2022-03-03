@@ -1,160 +1,103 @@
-# Avro Data Generator
+# Data Generator
 
-Utility for generating random (faker) data. 
-Uses an annotated [Avro schemas](https://avro.apache.org/docs/1.11.0/spec.html) for defining the structure of generated data and the faker content in the fields.
+The `DataGenerator` library uses annotated Apache `Avro Schema` to help you generate random and yet realistic datasets, supporting `JSON`, `Avro` and `YAML` output formats.
 
-The output data is in either binary `Avro` or `JSON` format. 
+The Avro Schemas can be annotated with [Data Faker](https://www.datafaker.net/usage/) and [SpEL](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#expressions) expressions to adapt the generated content to any particular use-case or data model.
 
-Furthermore, you use the Avro's `doc` element to hint the content of the generated fields with [Data Faker](https://www.datafaker.net/usage/) 
-and/or [SpEL](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#expressions) expressions.
+Data Generator allows, configuring dependencies between the fields of a single or different Schemas.
 
-//TODO explain the inter-field and inter-records field dependency control. 
-
+Full documentation at [Data Generator](https://www.logaritex.com/data-generator/getting-started/).
 ## Quick Start
 
-Let's define a new Avro schema that looks like this:
+Add the `data-generator` dependency to your project:
 
-```json
-{
-  "namespace": "my.clickstream.app",
-  "type": "record",
-  "name": "User",
-  "fields": [
-    {
-      "name": "user_id",
-      "type": "string"
-    },
-    {
-      "name": "name",
-      "type": "string"
-    },
-    {
-      "name": "department",
-      "type": "string"
-    },
-    {
-      "name": "industry",
-      "type": "string"
-    }
-  ]
-}
+```xml
+<dependency>
+  <groupId>com.logaritex.data</groupId>
+  <artifactId>data-generator</artifactId>
+  <version>0.0.2-SNAPSHOT</version>
+</dependency>
 ```
 
-and then generate few instances for it:
+Craete an Avro Schema with data Faker and/or SpEL expressions to hint the desired field content:
+
+```yaml title="user.yaml"
+namespace: io.simple.clicksteram
+type: record
+name: User
+fields:
+  - name: id
+    type: string
+    doc: "#{id_number.valid}"   # (1)
+  - name: sendAt
+    type:
+      type: long
+      logicalType: timestamp-millis
+    doc: "[[T(System).currentTimeMillis()]]" # (2)
+  - name: fullName
+    type: string
+    doc: "#{name.fullName}"
+  - name: email
+    type: string
+    doc: "#{internet.emailAddress}"
+  - name: age
+    type: int
+    doc: "#{number.number_between '8','80'}"
+```
+
+1. Generate realistic random IDs using the Faker's [IdNumber provider](https://s01.oss.sonatype.org/service/local/repositories/releases/archive/net/datafaker/datafaker/1.1.0/datafaker-1.1.0-javadoc.jar/!/net/datafaker/IdNumber.html).
+2. Generate a timestamp (now), using Spring Expression Language (SpEL) to call the Java static method: `#!java java.lang.System.currentTimeMillis()`.
+
+Run the DataGenerator with the user.yaml schema the  generate few data instances:
 
 ```java
-String usersSchema = "...";  
-List<GenericData.Record> users = DataGenerator.generateRecords(DataGenerator.toAvroSchema(usersSchema), 3);
-users.forEach(System.out::println);
-```
-you should see something like this:
+Iterator<GenericData.Record> iterator = 
+    new DataGenerator(
+        DataUtil.uriToSchema("file:/user.yaml"), // (1)
+        3) //(2)
+    .iterator();
 
-```json
-{"user_id": "jtvtifvnuimfdefqhdclhtrigygvl", "name": "bulmwraecirususetqtoa", "department": "lpsemw", "industry": "x"}
-{"user_id": "", "name": "rtoimktheuhhugbtvgwvwghldjbyyg", "department": "cltfttigky", "industry": "uigiprxd"}
-{"user_id": "hl", "name": "eanrjigueklfkebxlgqtcjhqkrriucvmgdegkcr", "department": "vrqlmnqrienopcbnyywlsrewvajcjrls", "industry": "lilmmybfmchtfvm"}
-```
-THough those are valid records they are not very exiting to read. 
-
-To provide more meaningful content you can leverage the [Faker](https://www.datafaker.net/providers/) library.
-For this just add the desired Faker's expression as `doc` description to your schema fields. 
-For example let's annotate our User schema like this:
-
-```json
-{
-  "namespace": "my.clickstream",
-  "type": "record",
-  "name": "User",
-  "fields": [
-    {
-      "name": "user_id",
-      "type": "string",
-      "doc": "#{id_number.valid}"
-    },
-    {
-      "name": "name",
-      "type": "string",
-      "doc": "#{name.fullName}"
-    },
-    {
-      "name": "department",
-      "type": "string",
-      "doc": "#{commerce.department}"
-    },
-    {
-      "name": "industry",
-      "type": "string",
-      "doc": "#{company.industry}"
-    }
-  ]
+while (iterator.hasNext()) {
+    System.out.println(iterator.next());
 }
 ```
 
-Run the generator again, and you should see output similar to this:
+1. Initialize the generator with the `user.yaml` schema.
+2. Number of instances to generate.
+
+the result should look like this:
 
 ```json
-{"user_id": "620-16-6571", "name": "Gus Jacobs", "department": "Baby", "industry": "Hospitality"}
-{"user_id": "444-29-4895", "name": "Mrs. Peter Bauch", "department": "Games", "industry": "Program Development"}
-{"user_id": "025-50-5776", "name": "Lawrence Spencer", "department": "Kids", "industry": "Warehousing"}
-```
-Arguably this is more meaningful to read.
-Explore the Faker provides: https://www.datafaker.net/providers/ to find one that relates to your use case domain.
-
-Similarly, lets define a new `Click` schema:
-
-```yaml
-namespace: my.clickstream
-type: record
-name: Click
-fields:
-  - name: user_id
-    type: string
-    doc: "#{id_number.valid}"
-  - name: timestamp
-    type:
-      type: long
-      logicalType: timestamp-millis
-    doc: "#{number.number_between '1644395673583','1654495873583'}"
-  - name: page
-    type: int
-    doc: "#{number.number_between '1','100000'}"
-  - name: device
-    type: string
-    doc: "#{options.option 'mobile','computer','tablet'}"
-  - name: agent
-    type: string
-    doc: "#{internet.userAgentAny}"
+{ 
+  "id": "263-73-3809", 
+  "sendAt": 1645529931141, 
+  "fullName": "Mohammed Goldner V", 
+  "email": "joeann.glover@hotmail.com", 
+  "age": 78
+},
+{ 
+  "id": "360-46-4449", 
+  "sendAt": 1645529931181, 
+  "fullName": "Ms. Winston Gutmann", 
+  "email": "louanne.kunze@yahoo.com", 
+  "age": 13
+}
 ```
 
-Here we decided to use `YAML` instead of `JSON`. Both formats are valid and supported.
+Next follow the [step-by-step guidelines](https://www.logaritex.com/data-generator/getting-started/).
 
-The `#{options.option 'XX','YY','ZZ'}` expression is useful for adding custom content tailored to your use-case that might not be provided by any of the Faker's provides. 
+## Features
 
-Note that the `Click`.`timestamp` field will generate random long values in the rage [1644395673583, 1654495873583]. 
-This might be fine for many situations, but if your use case expects timestamps that increase monotonically (not randomly jumping all over the range) or perhaps should start from particular time and increase onwards. 
-Or maybe your filed values should be conditional based on some internal or external conditions. 
+* Datasets are generated from and validated against well-formed Apache [Avro Schemas](../data-generator/usage.md#avro-schema).
+* [Annotate schema fields](../data-generator/usage.md#feild-content-expressions) with [Data Faker](https://www.datafaker.net/usage/) and [Spring Expression Language SpEL](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#expressions) expressions.
+* [Inter-field dependency](../data-generator/usage.md#inter-field-dependencies) - field values in a record can derive from or depend on each other.
+* [Instance uniqueness](../data-generator/usage.md#instance-uniqueness) - enforce instance uniqueness based on a selected dataset record field. 
+* [Shared dataset values](../data-generator/usage.md#shared-field-values) - allows sharing field values between different datasets.
 
-For those cases the Faker library alone is not that useful, and you should consider the [SpEL](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#expressions) expressions. 
-For this you can add `[[your-SpEL]]` expressions to the docs description.  
+For full documentation visit [logaritex/data-generator](https://logaritex.github.io/data-generator-docs).
 
-Using SpEL we can rewrite our `timestamp` hits like this:
-```yaml
-  - name: timestamp
-    type:
-      type: long
-      logicalType: timestamp-millis
-    doc: "[[T(System).currentTimeMillis()]]"
+## Build:
+
+```shell
+./mvnw clean install -DskipTests
 ```
-here we are instructing the generator to call the Java `System.currentTimeMillis()` to obtain the field value. 
-
-The SpEL is very powerful.  You can use it do call Java snippets directly like this: `"new String('hello world').toUpperCase()"`
-or using [conditional and Math operators](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#expressions-operators). 
-And much more. You can even run the Faker expressions from within the SpEL like this `[[#faker.name().fullName()]]`.
-
-You can use the SpEL alone or mix it with Faker expressions as well. for example `"#{number.number_between '[[T(System).currentTimeMillis()]]','1654495873583'}"`.
-Currently, the SpEL expressions are resolved before the Faker expressions. 
-
-## Related projects:
-
-* The [org.apache.avro.util.RandomData](https://avro.apache.org/docs/1.11.0/api/java/index.html) can generate random instances based on Avro schema.
-  Doesn't support Faker content nor expression hits for the fields. Doesn't provide in record field content dependency or shared field values for different schemas. 
