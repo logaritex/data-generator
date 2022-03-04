@@ -35,7 +35,7 @@
 
 	<scm>
 		<connection>scm:git:git@github.com:logaritex/data-generator.git</connection>
-		<developerConnection>scm:git:ssh://github.com/logaritex/data-generator.git</developerConnection>
+		<developerConnection>scm:git:ssh://git@github.com:logaritex/data-generator.git</developerConnection>
 		<url>https://github.com/logaritex/data-generator/tree/main</url>
 	</scm>
 
