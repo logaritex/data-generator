@@ -1,4 +1,4 @@
-name: Publish package to the Maven Central Repository
+name: Publish to the Maven Central
 on:
   release:
     types: [created]
@@ -30,4 +30,3 @@ jobs:
             --batch-mode \
             -Dgpg.passphrase=${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }} \
             clean deploy
-            
