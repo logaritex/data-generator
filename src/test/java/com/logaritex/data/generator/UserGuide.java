@@ -2,8 +2,6 @@ package com.logaritex.data.generator;
 
 import java.util.Random;
 
-import com.logaritex.data.generator.DataGenerator;
-import com.logaritex.data.generator.DataUtil;
 import com.logaritex.data.generator.context.SharedFieldValuesContext;
 
 
