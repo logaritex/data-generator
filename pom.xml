@@ -4,7 +4,7 @@
 
 	<groupId>com.logaritex.data</groupId>
 	<artifactId>data-generator</artifactId>
-	<version>0.0.2</version>
+	<version>0.0.3-SNAPSHOT</version>
 
 	<name>Data Generator</name>
 	<description>Utility for generatng realisting datasets</description>
@@ -36,7 +36,7 @@
 		<connection>scm:git:git@github.com:logaritex/data-generator.git</connection>
 		<developerConnection>scm:git:ssh://git@github.com/logaritex/data-generator.git</developerConnection>
 		<url>https://github.com/logaritex/data-generator/tree/main</url>
-	  <tag>0.0.2</tag>
+	  <tag>HEAD</tag>
   </scm>
 
 	<properties>
