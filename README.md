@@ -1,5 +1,7 @@
 # Data Generator
 
+[![Publish package to the Maven Central Repository](https://github.com/logaritex/data-generator/actions/workflows/maven-central-publish.yml/badge.svg)](https://github.com/logaritex/data-generator/actions/workflows/maven-central-publish.yml)
+
 The `DataGenerator` library uses annotated Apache `Avro Schema` to help you generate random and yet realistic datasets, supporting `JSON`, `Avro` and `YAML` output formats.
 
 The Avro Schemas can be annotated with [Data Faker](https://www.datafaker.net/usage/) and [SpEL](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#expressions) expressions to adapt the generated content to any particular use-case or data model.
