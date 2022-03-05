@@ -5,7 +5,7 @@
 
 	<groupId>com.logaritex.data</groupId>
 	<artifactId>data-generator</artifactId>
-	<version>0.0.3</version>
+	<version>0.0.4-SNAPSHOT</version>
 
 	<name>Data Generator</name>
 	<description>Utility for generatng realisting datasets</description>
@@ -148,7 +148,7 @@
 				<extensions>true</extensions>
 				<configuration>
 					<serverId>ossrh</serverId>
-					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+					<nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
 					<!--  Change to true once we're good! -->
 					<autoReleaseAfterClose>true</autoReleaseAfterClose>
 				</configuration>
