@@ -20,6 +20,12 @@
 
 ## References:
 
+* [Deploying to OSSRH with Apache Maven - Introduction](https://central.sonatype.org/publish/publish-maven/)
 * [Publishing my first artifact to maven central using GitHub actions](https://theoverengineered.blog/posts/publishing-my-first-artifact-to-maven-central-using-github-actions)
 * [Publishing Java packages with Maven](https://docs.github.com/en/actions/publishing-packages/publishing-java-packages-with-maven)
 * [Publishing Github Java Packages to Maven Central for a New Domain](https://www.marcd.dev/articles/2021-03/mvncentral-publish-github)
+
+
+* Nexus
+  * https://s01.oss.sonatype.org/content/repositories/snapshots/com/logaritex/data/data-generator/
+  * https://s01.oss.sonatype.org/#nexus-search;quick~logaritex
