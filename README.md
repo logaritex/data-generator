@@ -1,6 +1,8 @@
 # Data Generator
 
-[![Publish package to the Maven Central Repository](https://github.com/logaritex/data-generator/actions/workflows/maven-central-publish.yml/badge.svg)](https://github.com/logaritex/data-generator/actions/workflows/maven-central-publish.yml)
+[![latest Maven Central](https://maven-badges.herokuapp.com/maven-central/com.logaritex.data/data-generator/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.logaritex.data/data-generator) [![Publish to the Maven Central](https://github.com/logaritex/data-generator/actions/workflows/maven-central-publish.yml/badge.svg)](https://github.com/logaritex/data-generator/actions/workflows/maven-central-publish.yml)
+
+Documentation: [www.logaritex.com/data-generator](https://www.logaritex.com/data-generator/getting-started/).
 
 The `DataGenerator` library uses annotated Apache `Avro Schema` to help you generate random and yet realistic datasets, supporting `JSON`, `Avro` and `YAML` output formats.
 
@@ -8,7 +10,7 @@ The Avro Schemas can be annotated with [Data Faker](https://www.datafaker.net/us
 
 Data Generator allows, configuring dependencies between the fields of a single or different Schemas.
 
-Full documentation at [https://www.logaritex.com/data-generator](https://www.logaritex.com/data-generator/getting-started/).
+
 
 ## Quick Start
 
@@ -18,7 +20,7 @@ Add the `data-generator` dependency to your project:
 <dependency>
   <groupId>com.logaritex.data</groupId>
   <artifactId>data-generator</artifactId>
-  <version>0.0.2-SNAPSHOT</version>
+  <version>0.0.3-SNAPSHOT</version>
 </dependency>
 ```
 
