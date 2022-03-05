@@ -5,7 +5,7 @@
 
 	<groupId>com.logaritex.data</groupId>
 	<artifactId>data-generator</artifactId>
-	<version>0.0.3-SNAPSHOT</version>
+	<version>0.0.3</version>
 
 	<name>Data Generator</name>
 	<description>Utility for generatng realisting datasets</description>
